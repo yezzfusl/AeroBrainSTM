@@ -30,6 +30,10 @@ void initializeTelemetry(void);
 void sendTelemetryData(void);
 void receiveTelemetryCommands(void);
 
+void initializeImageProcessing(void);
+void runImageProcessing(void);
+void setComplexScene(int isComplex);
+
 typedef struct {
     float roll;
     float pitch;

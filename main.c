@@ -4,36 +4,35 @@ Orientation currentOrientation = {0};
 GPSData currentGPSData = {0};
 
 int main(void) {
-    // Initialize the system
     HAL_Init();
     SystemClock_Config();
     
-    // Initialize subsystems
     initializeStabilization();
     initializeGPS();
+    initializePathPlanning();
+    initializeLidar();
+    
+    addWaypoint(37.7749, -122.4194, 10.0);
+    addWaypoint(37.7747, -122.4192, 15.0);
+    addWaypoint(37.7750, -122.4195, 20.0);
     
     while (1) {
-        // Main control loop
         updateStabilization();
         updateGPSData();
+        updateLidarData();
+        updatePathPlanning();
         
-        // TODO: Add more control logic here
-        
-        HAL_Delay(10); // 100 Hz loop rate
+        HAL_Delay(10);
     }
 }
 
 void SystemClock_Config(void) {
-    // Configure the system clock for STM32H743ZI
-    // (400 MHz CPU clock)
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-    // Configure the main internal regulator output voltage
     __HAL_RCC_PWR_CLK_ENABLE();
     __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-    // Initialize the CPU, AHB and APB buses clocks
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSEState = RCC_HSE_ON;
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
@@ -50,7 +49,6 @@ void SystemClock_Config(void) {
         Error_Handler();
     }
 
-    // Initialize the CPU, AHB and APB buses clocks
     RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                                 |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2
                                 |RCC_CLOCKTYPE_D3PCLK1|RCC_CLOCKTYPE_D1PCLK1;
@@ -67,8 +65,6 @@ void SystemClock_Config(void) {
 }
 
 void Error_Handler(void) {
-    // TODO: Implement error handling (e.g., LED blinking, error logging)
     while(1) {
-        // Infinite loop to prevent further execution
     }
 }

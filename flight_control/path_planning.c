@@ -14,10 +14,12 @@ typedef struct {
 static Waypoint waypoints[MAX_WAYPOINTS];
 static int waypointCount = 0;
 static int currentWaypoint = 0;
+static int missionStarted = 0;
 
 void initializePathPlanning(void) {
     waypointCount = 0;
     currentWaypoint = 0;
+    missionStarted = 0;
 }
 
 void addWaypoint(double latitude, double longitude, float altitude) {
@@ -49,7 +51,7 @@ static double calculateBearing(double lat1, double lon1, double lat2, double lon
 }
 
 void updatePathPlanning(void) {
-    if (currentWaypoint >= waypointCount) {
+    if (!missionStarted || currentWaypoint >= waypointCount) {
         return;
     }
 
@@ -76,4 +78,21 @@ void updatePathPlanning(void) {
     float desiredRoll = 0.0f;
 
     setStabilizationTarget(desiredRoll, desiredPitch, desiredYaw);
+}
+
+int getCurrentWaypointIndex(void) {
+    return currentWaypoint;
+}
+
+int getTotalWaypoints(void) {
+    return waypointCount;
+}
+
+void startMission(void) {
+    missionStarted = 1;
+}
+
+void abortMission(void) {
+    missionStarted = 0;
+    currentWaypoint = 0;
 }

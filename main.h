@@ -17,10 +17,18 @@ void updateGPSData(void);
 void initializePathPlanning(void);
 void addWaypoint(double latitude, double longitude, float altitude);
 void updatePathPlanning(void);
+int getCurrentWaypointIndex(void);
+int getTotalWaypoints(void);
+void startMission(void);
+void abortMission(void);
 
 void initializeLidar(void);
 void updateLidarData(void);
 float getObstacleDistance(float bearing);
+
+void initializeTelemetry(void);
+void sendTelemetryData(void);
+void receiveTelemetryCommands(void);
 
 typedef struct {
     float roll;

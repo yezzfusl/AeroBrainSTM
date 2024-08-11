@@ -11,16 +11,16 @@ int main(void) {
     initializeGPS();
     initializePathPlanning();
     initializeLidar();
-    
-    addWaypoint(37.7749, -122.4194, 10.0);
-    addWaypoint(37.7747, -122.4192, 15.0);
-    addWaypoint(37.7750, -122.4195, 20.0);
+    initializeTelemetry();
     
     while (1) {
         updateStabilization();
         updateGPSData();
         updateLidarData();
         updatePathPlanning();
+        
+        sendTelemetryData();
+        receiveTelemetryCommands();
         
         HAL_Delay(10);
     }

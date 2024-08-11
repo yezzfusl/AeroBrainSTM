@@ -12,6 +12,7 @@ int main(void) {
     initializePathPlanning();
     initializeLidar();
     initializeTelemetry();
+    initializeImageProcessing();
     
     while (1) {
         updateStabilization();
@@ -21,6 +22,8 @@ int main(void) {
         
         sendTelemetryData();
         receiveTelemetryCommands();
+        
+        runImageProcessing();
         
         HAL_Delay(10);
     }

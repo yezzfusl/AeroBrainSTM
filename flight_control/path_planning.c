@@ -4,6 +4,7 @@
 
 #define MAX_WAYPOINTS 100
 #define OBSTACLE_THRESHOLD 1.0f // meters
+#define COMPLEX_SCENE_SPEED_REDUCTION 0.5f
 
 typedef struct {
     double latitude;
@@ -15,11 +16,13 @@ static Waypoint waypoints[MAX_WAYPOINTS];
 static int waypointCount = 0;
 static int currentWaypoint = 0;
 static int missionStarted = 0;
+static int isComplexScene = 0;
 
 void initializePathPlanning(void) {
     waypointCount = 0;
     currentWaypoint = 0;
     missionStarted = 0;
+    isComplexScene = 0;
 }
 
 void addWaypoint(double latitude, double longitude, float altitude) {
@@ -77,6 +80,10 @@ void updatePathPlanning(void) {
     float desiredPitch = -5.0f;
     float desiredRoll = 0.0f;
 
+    if (isComplexScene) {
+        desiredPitch *= COMPLEX_SCENE_SPEED_REDUCTION;
+    }
+
     setStabilizationTarget(desiredRoll, desiredPitch, desiredYaw);
 }
 
@@ -95,4 +102,8 @@ void startMission(void) {
 void abortMission(void) {
     missionStarted = 0;
     currentWaypoint = 0;
+}
+
+void setComplexScene(int isComplex) {
+    isComplexScene = isComplex;
 }
